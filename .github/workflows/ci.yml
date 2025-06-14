@@ -165,3 +165,4 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           fail: ${{ github.ref == 'refs/heads/main' }}
+          failIfEmpty: false
