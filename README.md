@@ -118,6 +118,12 @@ spec:
     spec:
       containers:
         - args:
+            - echo
+            - all good
+          image: busybox
+          name: busybox
+      initContainers:
+        - args:
             - check
             - "--http-target"
             - http://my-service.default.svc.cluster.local/health
