@@ -6,12 +6,20 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"runtime"
 	"strings"
 	"time"
 
 	"github.com/urfave/cli/v3"
 
 	"github.com/meysam81/x/logging"
+)
+
+var (
+	version = "dev"
+	commit  = "HEAD"
+	date    = "unknown"
+	builtBy = "unknown"
 )
 
 type AppState struct {
@@ -87,19 +95,26 @@ func (a *AppState) performHttpCheck(check *HttpCheck) error {
 	return nil
 }
 
-func main() {
-	ctx := context.Background()
+func createVersionCommand() *cli.Command {
+	return &cli.Command{
+		Name:  "version",
+		Usage: "show version information",
+		Action: func(ctx context.Context, c *cli.Command) error {
+			fmt.Printf("Version:    %s\n", version)
+			fmt.Printf("Commit:     %s\n", commit)
+			fmt.Printf("Built:      %s\n", date)
+			fmt.Printf("Built by:   %s\n", builtBy)
+			fmt.Printf("Go version: %s\n", runtime.Version())
+			fmt.Printf("OS/Arch:    %s/%s\n", runtime.GOOS, runtime.GOARCH)
+			return nil
+		},
+	}
+}
 
-	httpCheck := &HttpCheck{}
-	config := &Config{logLevel: "info"}
-	logger := newLogger(config)
-	app := AppState{l: logger}
-
-	cmd := &cli.Command{
-		Name:                  "liveness-check",
-		Usage:                 "Perform liveness check on a given URL and exit afterwards, with configurable retries.",
-		Suggest:               true,
-		EnableShellCompletion: true,
+func (a *AppState) createCheckCommand(config *Config, httpCheck *HttpCheck) *cli.Command {
+	return &cli.Command{
+		Name:  "check",
+		Usage: "Perform the HTTP check",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "http-target",
@@ -150,12 +165,32 @@ func main() {
 			case "warn":
 			case "error":
 			case "critical":
-				app = AppState{l: newLogger(config)}
+				a = &AppState{l: newLogger(config)}
 			default:
 				return fmt.Errorf("unknown log level provided: %s, accepted log levels are debug, info, warn, error, critical", config.logLevel)
 			}
 
-			return app.performHttpCheck(httpCheck)
+			return a.performHttpCheck(httpCheck)
+		},
+	}
+}
+
+func main() {
+	ctx := context.Background()
+
+	httpCheck := &HttpCheck{}
+	config := &Config{logLevel: "info"}
+	logger := newLogger(config)
+	app := AppState{l: logger}
+
+	cmd := &cli.Command{
+		Name:                  "liveness-check",
+		Usage:                 "Perform liveness check on a given URL and exit afterwards, with configurable retries.",
+		Suggest:               true,
+		EnableShellCompletion: true,
+		Commands: []*cli.Command{
+			app.createCheckCommand(config, httpCheck),
+			createVersionCommand(),
 		},
 	}
 
