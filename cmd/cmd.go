@@ -85,14 +85,6 @@ func (a *app) createGlobalFlags() []cli.Flag {
 			Destination: &a.Config.StatusCode,
 			Sources:     cli.EnvVars("STATUS_CODE"),
 		},
-		&cli.StringFlag{
-			Name:        "log-level",
-			Aliases:     []string{"l"},
-			Usage:       "The verbosity of the logs (debug, info, warn, error, critical)",
-			Value:       "info",
-			Destination: &a.Config.LogLevel,
-			Sources:     cli.EnvVars("LOG_LEVEL"),
-		},
 	}
 }
 
