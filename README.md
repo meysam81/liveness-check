@@ -11,7 +11,8 @@
 <!-- Release & Distribution -->
 
 [![Latest Release](https://img.shields.io/github/v/release/meysam81/liveness-check?style=flat-square&logo=github&color=blue)](https://github.com/meysam81/liveness-check/releases/latest)
-[![Docker Image](https://img.shields.io/badge/docker-meysam81%2Fliveness--check-blue?style=flat-square&logo=docker)](https://ghcr.io/meysam81/liveness-check)
+[![Docker Image](https://img.shields.io/badge/docker-meysam81%2Fliveness--check-blue?style=flat-square&logo=docker)](https://hub.docker.com/r/meysam81/liveness-check)
+[![Docker Pulls](https://img.shields.io/docker/pulls/meysam81/liveness-check?style=flat-square&logo=docker)](https://hub.docker.com/r/meysam81/liveness-check)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/meysam81/liveness-check?style=flat-square&logo=go)](go.mod)
 
 <!-- License & Community -->
