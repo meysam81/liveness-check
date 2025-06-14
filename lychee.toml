@@ -1,4 +1,5 @@
 exclude = [
+  "https://github.com/.*/compare/.*",
 ]
 
 exclude_path = [
