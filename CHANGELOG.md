@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/meysam81/liveness-check/compare/v1.1.1...v1.1.2) (2025-06-14)
+
+
+### Bug Fixes
+
+* **build:** append changelog ([cbbf307](https://github.com/meysam81/liveness-check/commit/cbbf307e1bc829daa8a2eb619713f5339e1e20b1))
+* **docs:** add docker pull count ([d068bfb](https://github.com/meysam81/liveness-check/commit/d068bfb32da713a68db5700afe94059c5f477aa1))
+* **docs:** add k8s example ([526df15](https://github.com/meysam81/liveness-check/commit/526df153b50a9d06ae50a02eb5a66ced7f0d8798))
+* **docs:** run k8s job as init container ([e857219](https://github.com/meysam81/liveness-check/commit/e857219ffefb9b8b09a0ae0e134edf3d15bd5782))
+* drop log level from cli args ([30a2992](https://github.com/meysam81/liveness-check/commit/30a2992c977e727fd1ef876f941f43b04b0c00a7))
+* initialize log level manually from envs ([98d862d](https://github.com/meysam81/liveness-check/commit/98d862d5fa6340bc49aab9121bddd432078a5447))
+
 ## [1.1.1](https://github.com/meysam81/liveness-check/compare/v1.1.0...v1.1.1) (2025-06-14)
 
 
