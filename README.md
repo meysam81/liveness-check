@@ -47,6 +47,19 @@ A lightweight CLI tool for HTTP health checks with configurable retries and time
 This is best used in containerized environments and more specifically, to check
 the healthcheck of a recently deployed pod for preview environment.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Install](#install)
+- [Usage](#usage)
+  - [Environment Variables](#environment-variables)
+  - [Docker](#docker)
+  - [Kubernetes Example](#kubernetes-example)
+- [Options](#options)
+- [Build](#build)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Install
 
 ```bash
@@ -90,6 +103,44 @@ liveness-check check
 ```bash
 docker run --rm ghcr.io/meysam81/liveness-check:latest \
   check --http-target http://host.docker.internal:8080/health
+```
+
+### Kubernetes Example
+
+```yaml
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: liveness-check
+spec:
+  template:
+    spec:
+      containers:
+        - args:
+            - check
+            - "--http-target"
+            - http://my-service.default.svc.cluster.local/health
+          image: ghcr.io/meysam81/liveness-check
+          name: liveness-check
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          terminationMessagePolicy: FallbackToLogsOnError
+      restartPolicy: OnFailure
 ```
 
 ## Options
