@@ -72,7 +72,7 @@ func (a *AppState) performHttpCheck(check *HttpCheck) error {
 
 	var tries uint = 0
 	for {
-		if tries >= check.retries {
+		if check.retries > 0 && tries >= check.retries {
 			a.l.Error().Msgf("halting check with max retries reached: %d", check.retries)
 			return nil
 		}
