@@ -95,22 +95,6 @@ func (a *AppState) performHttpCheck(check *HttpCheck) error {
 	return nil
 }
 
-func createVersionCommand() *cli.Command {
-	return &cli.Command{
-		Name:  "version",
-		Usage: "show version information",
-		Action: func(ctx context.Context, c *cli.Command) error {
-			fmt.Printf("Version:    %s\n", version)
-			fmt.Printf("Commit:     %s\n", commit)
-			fmt.Printf("Built:      %s\n", date)
-			fmt.Printf("Built by:   %s\n", builtBy)
-			fmt.Printf("Go version: %s\n", runtime.Version())
-			fmt.Printf("OS/Arch:    %s/%s\n", runtime.GOOS, runtime.GOARCH)
-			return nil
-		},
-	}
-}
-
 func (a *AppState) createCheckCommand(config *Config, httpCheck *HttpCheck) *cli.Command {
 	return &cli.Command{
 		Name:  "check",
@@ -165,7 +149,7 @@ func (a *AppState) createCheckCommand(config *Config, httpCheck *HttpCheck) *cli
 			case "warn":
 			case "error":
 			case "critical":
-				a = &AppState{l: newLogger(config)}
+				a.l = newLogger(config)
 			default:
 				return fmt.Errorf("unknown log level provided: %s, accepted log levels are debug, info, warn, error, critical", config.logLevel)
 			}
@@ -183,6 +167,15 @@ func main() {
 	logger := newLogger(config)
 	app := AppState{l: logger}
 
+	cli.VersionPrinter = func(c *cli.Command) {
+		fmt.Printf("Version:    %s\n", version)
+		fmt.Printf("Commit:     %s\n", commit)
+		fmt.Printf("Built:      %s\n", date)
+		fmt.Printf("Built by:   %s\n", builtBy)
+		fmt.Printf("Go version: %s\n", runtime.Version())
+		fmt.Printf("OS/Arch:    %s/%s\n", runtime.GOOS, runtime.GOARCH)
+	}
+
 	cmd := &cli.Command{
 		Name:                  "liveness-check",
 		Usage:                 "Perform liveness check on a given URL and exit afterwards, with configurable retries.",
@@ -190,8 +183,8 @@ func main() {
 		EnableShellCompletion: true,
 		Commands: []*cli.Command{
 			app.createCheckCommand(config, httpCheck),
-			createVersionCommand(),
 		},
+		Version: version,
 	}
 
 	err := cmd.Run(ctx, os.Args)
