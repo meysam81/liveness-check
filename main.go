@@ -6,8 +6,10 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/signal"
 	"runtime"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/urfave/cli/v3"
@@ -67,7 +69,7 @@ func newLogger(level string) *logging.Logger {
 	return &logger
 }
 
-func (a *AppState) performHttpCheck() error {
+func (a *AppState) performHttpCheck(ctx context.Context) error {
 	client := &http.Client{
 		Timeout: time.Duration(a.h.timeout) * time.Second,
 	}
@@ -85,20 +87,28 @@ func (a *AppState) performHttpCheck() error {
 		if err != nil {
 			tries += 1
 			jitter := randomBetween(5, 10)
+
 			a.l.Info().Err(err).Msgf("[%d] upstream check unsuccessful, retrying in %ds", tries, jitter)
-			time.Sleep(time.Duration(jitter) * time.Second)
-			continue
+
+			t := time.NewTicker(time.Duration(jitter) * time.Second)
+			defer t.Stop()
+
+			select {
+			case <-ctx.Done():
+				a.l.Info().Msg("shutdown signal received. stopping...")
+				return nil
+			case <-t.C:
+				continue
+			}
 		}
 
 		elapsed := time.Since(start)
 
 		if resp.StatusCode == int(a.h.statusCode) {
 			a.l.Info().Msgf("took %s for http check successful with status code: %s", elapsed.Round(time.Millisecond).String(), resp.Status)
-			break
+			return nil
 		}
 	}
-
-	return nil
 }
 
 func (a *AppState) createCheckCommand() *cli.Command {
@@ -116,7 +126,7 @@ func (a *AppState) createCheckCommand() *cli.Command {
 			},
 		},
 		Action: func(ctx context.Context, c *cli.Command) error {
-			return a.performHttpCheck()
+			return a.performHttpCheck(ctx)
 		},
 	}
 }
@@ -205,10 +215,15 @@ func main() {
 		},
 	}
 
+	ctxT, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGHUP)
+	defer stop()
+
 	app.l.Debug().Msg("Starting the app...")
 
-	err := cmd.Run(ctx, os.Args)
+	err := cmd.Run(ctxT, os.Args)
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	app.l.Info().Msg("it's been a pleasure. goodbye till next time.")
 }
