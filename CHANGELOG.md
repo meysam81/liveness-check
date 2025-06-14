@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/meysam81/liveness-check/compare/v1.1.0...v1.1.1) (2025-06-14)
+
+
+### Bug Fixes
+
+* **build:** uncomment the cosign ([a32cfe9](https://github.com/meysam81/liveness-check/commit/a32cfe9e2a30f6a0a7bba57189cf44f7b4a1660c))
+* perform major refactor in favor of modularity and maintainability ([9bf8017](https://github.com/meysam81/liveness-check/commit/9bf8017b9e209b0ca0b50fb91a54e22d67f8d09c))
+
 ## [1.1.0](https://github.com/meysam81/liveness-check/compare/v1.0.0...v1.1.0) (2025-06-14)
 
 
