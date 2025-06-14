@@ -99,17 +99,17 @@ release:
 
     **Full Changelog**: https://github.com/meysam81/{{ .ProjectName }}/compare/{{ .PreviousTag }}...{{ .Tag }}
 
-# binary_signs:
-#   - cmd: cosign
-#     args:
-#       - sign-blob
-#       - --output-signature=${signature}
-#       - --output-certificate=${certificate}
-#       - ${artifact}
-#       - --yes
-#     certificate: '${artifact}_{{- tolower .Os }}_{{- if eq .Arch "386" }}i386{{- else }}{{ .Arch }}{{ end }}{{- if .Arm }}v{{ .Arm }}{{ end }}.pem'
-#     signature: '${artifact}_{{- tolower .Os }}_{{- if eq .Arch "386" }}i386{{- else }}{{ .Arch }}{{ end }}{{- if .Arm }}v{{ .Arm }}{{ end }}.sig'
-#     output: true
+binary_signs:
+  - cmd: cosign
+    args:
+      - sign-blob
+      - --output-signature=${signature}
+      - --output-certificate=${certificate}
+      - ${artifact}
+      - --yes
+    certificate: '${artifact}_{{- tolower .Os }}_{{- if eq .Arch "386" }}i386{{- else }}{{ .Arch }}{{ end }}{{- if .Arm }}v{{ .Arm }}{{ end }}.pem'
+    signature: '${artifact}_{{- tolower .Os }}_{{- if eq .Arch "386" }}i386{{- else }}{{ .Arch }}{{ end }}{{- if .Arm }}v{{ .Arm }}{{ end }}.sig'
+    output: true
 
 checksum:
   name_template: checksums.txt
