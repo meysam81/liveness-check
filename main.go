@@ -23,6 +23,8 @@ func main() {
 	app := cmd.NewApp()
 	command := app.CreateCommand(version, commit, date, builtBy)
 
+	app.Logger.Debug().Msg("Starting the app...")
+
 	if err := command.Run(ctx, os.Args); err != nil {
 		app.Logger.Fatal().Err(err).Msg("good bye till next time.")
 	}

@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/meysam81/x/logging"
@@ -16,8 +17,13 @@ type Config struct {
 }
 
 func New() *Config {
+	logLevel := "info"
+	if level, ok := os.LookupEnv("LOG_LEVEL"); ok {
+		logLevel = level
+	}
+
 	return &Config{
-		LogLevel:   "info",
+		LogLevel:   logLevel,
 		Timeout:    5,
 		StatusCode: 200,
 	}

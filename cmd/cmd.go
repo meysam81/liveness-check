@@ -35,10 +35,6 @@ func createLogger(cfg *config.Config) *logging.Logger {
 	return &logger
 }
 
-func (a *app) updateLogger() {
-	a.Logger = createLogger(a.Config)
-}
-
 func (a *app) CreateCommand(version, commit, date, builtBy string) *cli.Command {
 	cli.VersionPrinter = func(c *cli.Command) {
 		fmt.Printf("Version:    %s\n", version)
@@ -122,8 +118,6 @@ func (a *app) rootAction(ctx context.Context, c *cli.Command) error {
 	if err := a.Config.Validate(); err != nil {
 		return err
 	}
-
-	a.updateLogger()
 
 	if c.NArg() == 0 {
 		var availableCommands []string
