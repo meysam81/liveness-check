@@ -17,10 +17,13 @@ ARG BUILT_BY=docker
 
 WORKDIR /app
 
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED=0 \
+    GOCACHE=/tmp/go-cache
 
 COPY . .
 RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/tmp/go-cache \
   go build -ldflags="-s -w -extldflags '-static' -X main.version=${VERSION} -X main.commit=${COMMIT} -X main.date=${DATE} -X main.builtBy=${BUILT_BY}" -trimpath -o entrypoint
 
 FROM scratch AS final
