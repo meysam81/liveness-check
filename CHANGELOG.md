@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/meysam81/liveness-check/compare/v1.2.1...v1.2.2) (2025-06-15)
+
+
+### Bug Fixes
+
+* list the pods again if the pod ip is not yet assigned ([444d690](https://github.com/meysam81/liveness-check/commit/444d6900ed0f687e27ef6056f8c1eebdd3fb815f))
+
 ## [1.2.1](https://github.com/meysam81/liveness-check/compare/v1.2.0...v1.2.1) (2025-06-15)
 
 
