@@ -104,11 +104,14 @@ func (h *HTTPChecker) performSingleCheck(ctx context.Context) CheckResult {
 }
 
 func (h *HTTPChecker) waitWithJitter(ctx context.Context, jitterSeconds int) error {
+	t := time.NewTicker(time.Duration(jitterSeconds) * time.Second)
+	defer t.Stop()
+
 	select {
 	case <-ctx.Done():
 		h.logger.Info().Msg("shutdown signal received")
 		return ctx.Err()
-	case <-time.After(time.Duration(jitterSeconds) * time.Second):
+	case <-t.C:
 		return nil
 	}
 }

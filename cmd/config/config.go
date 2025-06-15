@@ -19,7 +19,7 @@ type Config struct {
 func New() *Config {
 	logLevel := "info"
 	if level, ok := os.LookupEnv("LOG_LEVEL"); ok {
-		logLevel = level
+		logLevel = strings.ToLower(level)
 	}
 
 	return &Config{
