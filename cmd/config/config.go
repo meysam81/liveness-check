@@ -75,7 +75,7 @@ func (c *Config) Validate() error {
 	}
 
 	if len(errs) > 0 {
-		return fmt.Errorf("%s", strings.Join(errs, "\n"))
+		return fmt.Errorf("%s", fmt.Sprint(strings.Join(errs, "\n")))
 	}
 
 	return nil

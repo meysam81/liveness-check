@@ -76,7 +76,7 @@ func (k *K8sPodChecker) Check(ctx context.Context) error {
 		return err
 	}
 
-	k.Common.Logger.Info().Strs("labels", k.LabelSelector).Str("namespace", k.Namespace).Msg("listing pods with selected labels")
+	k.Common.Logger.Info().Strs("labels", k.LabelSelector).Str("namespace", k.Namespace).Msg("listing pods")
 
 	pods, err := clientset.CoreV1().Pods(k.Namespace).List(ctx, metav1.ListOptions{
 		LabelSelector: strings.Join(k.LabelSelector, ","),
