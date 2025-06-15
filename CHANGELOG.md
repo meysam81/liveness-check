@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.2.0](https://github.com/meysam81/liveness-check/compare/v1.1.2...v1.2.0) (2025-06-15)
+
+
+### Features
+
+* add k8s pod checker ([2d3ae8f](https://github.com/meysam81/liveness-check/commit/2d3ae8f48818f3a38e1ddd21157e6d8384f83954))
+* **docs:** beautify and provide clear examples ([2abf984](https://github.com/meysam81/liveness-check/commit/2abf9842aaf15dde4de60b91376d907b4a310a49))
+
+
+### Bug Fixes
+
+* **build:** increase build by caching docker layers ([448c89d](https://github.com/meysam81/liveness-check/commit/448c89d445345bedc27edb959dbc538832339f99))
+* **CI:** do not check compare URLs ([2188f41](https://github.com/meysam81/liveness-check/commit/2188f41fb1f91ee807cfcbb367bb796216bccecd))
+* **docs:** add line separator to headings ([8501b03](https://github.com/meysam81/liveness-check/commit/8501b038432e1ff1b54bb7a092bc5a26c4209362))
+* **docs:** modify badges ([1ce0c05](https://github.com/meysam81/liveness-check/commit/1ce0c05dc60e0b6387c954d122f2db9584b0f0f6))
+* **docs:** provide a complete k8s example ([63069fe](https://github.com/meysam81/liveness-check/commit/63069fe734e4c9a457817213635f75d523987282))
+* quickly exit when the max retries is reached ([49f462c](https://github.com/meysam81/liveness-check/commit/49f462c20a36b2387b097c3774ed8cd0285b1ca4))
+* return error on listing pods ([75c4551](https://github.com/meysam81/liveness-check/commit/75c4551b29f2d875b947c21cf93dcffef45c9616))
+* use ticker instead of time and lower log level ([8ee8361](https://github.com/meysam81/liveness-check/commit/8ee83612773de2c4c1297df83d09788d8a3bda05))
+
 ## [1.1.2](https://github.com/meysam81/liveness-check/compare/v1.1.1...v1.1.2) (2025-06-14)
 
 
