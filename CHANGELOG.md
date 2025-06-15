@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/meysam81/liveness-check/compare/v1.2.2...v1.2.3) (2025-06-15)
+
+
+### Bug Fixes
+
+* simplify the error handling by returning early ([398a0ba](https://github.com/meysam81/liveness-check/commit/398a0babd85733aed723ff285f219abeff6a3737))
+
 ## [1.2.2](https://github.com/meysam81/liveness-check/compare/v1.2.1...v1.2.2) (2025-06-15)
 
 
