@@ -35,10 +35,9 @@
 
 <!-- Hackery & Performance -->
 
-[![Zero Dependencies](https://img.shields.io/badge/⚡_Zero-Dependencies-yellow?style=flat-square)](https://golang.org/)
 [![Jitter Logic](https://img.shields.io/badge/🎯_Smart-Jitter-purple?style=flat-square)](#usage)
 [![Infinite Retries](https://img.shields.io/badge/♾️_Infinite-Retries-teal?style=flat-square)](#options)
-[![Microsecond Precision](https://img.shields.io/badge/⏱️_μs-Precision-indigo?style=flat-square)](https://golang.org/pkg/time/)
+[![Millisecond Precision](https://img.shields.io/badge/⏱️_ms-Precision-indigo?style=flat-square)](https://golang.org/pkg/time/)
 
 </div>
 
