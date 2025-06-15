@@ -106,6 +106,8 @@ docker run --rm ghcr.io/meysam81/liveness-check:latest \
 
 ### Kubernetes Example
 
+A complete example is available at [deploy](./deploy) directory.
+
 ```yaml
 ---
 apiVersion: batch/v1
@@ -115,37 +117,20 @@ metadata:
 spec:
   template:
     spec:
+      automountServiceAccountToken: true
       containers:
-        - args:
-            - echo
-            - all good
-          image: busybox
-          name: busybox
-      initContainers:
-        - args:
-            - check
-            - "--http-target"
-            - http://my-service.default.svc.cluster.local/health
+        - env:
+            - name: NAMESPACE
+              value: default
+            - name: LABEL_SELECTORS
+              value: app.kubernetes.io/name=nginx
+            - name: ENDPOINT
+              value: /
           image: ghcr.io/meysam81/liveness-check
           name: liveness-check
-          resources:
-            limits:
-              cpu: 10m
-              memory: 10Mi
-            requests:
-              cpu: 10m
-              memory: 10Mi
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            readOnlyRootFilesystem: true
-            runAsGroup: 65534
-            runAsNonRoot: true
-            runAsUser: 65534
-          terminationMessagePolicy: FallbackToLogsOnError
+          resources: {}
       restartPolicy: OnFailure
+      serviceAccountName: liveness-check
 ```
 
 ## Options

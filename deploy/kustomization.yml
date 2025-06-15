@@ -1,0 +1,46 @@
+resources:
+  - job.yml
+  - role.yml
+  - rolebinding.yml
+  - serviceaccount.yml
+
+images:
+  - name: ghcr.io/meysam81/liveness-check
+
+replacements:
+  - source:
+      fieldPath: metadata.name
+      kind: ServiceAccount
+      name: liveness-check
+    targets:
+      - select:
+          kind: RoleBinding
+          name: liveness-check
+        fieldPaths:
+          - subjects.0.name
+        options:
+          create: true
+  - source:
+      fieldPath: metadata.namespace
+      kind: ServiceAccount
+      name: liveness-check
+    targets:
+      - select:
+          kind: RoleBinding
+          name: liveness-check
+        fieldPaths:
+          - subjects.0.namespace
+        options:
+          create: true
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: liveness-check
+      app.kubernetes.io/instance: liveness-check
+      app.kubernetes.io/managed-by: Kustomize
+      app.kubernetes.io/name: liveness-check
+      app.kubernetes.io/part-of: liveness-check
+      app.kubernetes.io/version: v1.0.0
+
+namespace: default
