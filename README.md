@@ -21,6 +21,9 @@ _Verify your pods are ready before traffic hits them_
 [![Docker Pulls](https://img.shields.io/docker/pulls/meysam81/liveness-check?style=flat-square&logo=docker)](https://hub.docker.com/r/meysam81/liveness-check)
 [![Image Size](https://img.shields.io/docker/image-size/meysam81/liveness-check?style=flat-square&logo=docker)](https://ghcr.io/meysam81/liveness-check)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/meysam81/liveness-check?style=flat-square&logo=go)](go.mod)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/meysam81/liveness-check)](https://github.com/meysam81/liveness-check)
+[![GitHub repo size](https://img.shields.io/github/repo-size/meysam81/liveness-check)](https://github.com/meysam81/liveness-check)
+
 
 <!-- Features & Capabilities -->
 

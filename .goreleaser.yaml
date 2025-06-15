@@ -85,7 +85,7 @@ release:
     owner: "meysam81"
     name: "{{ .ProjectName }}"
   draft: false
-  mode: append
+  mode: replace
   prerelease: auto
   header: |
     ## What's Changed
