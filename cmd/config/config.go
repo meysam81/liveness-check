@@ -26,6 +26,8 @@ type Config struct {
 	LogLevel   string
 	Retries    uint
 	Timeout    uint
+	JitterMin  int
+	JitterMax  int
 	StatusCode int
 
 	StaticHTTPTarget *StaticHTTPTarget

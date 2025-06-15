@@ -3,7 +3,6 @@ package checker
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"time"
 )
@@ -15,11 +14,9 @@ type StaticHTTPChecker struct {
 }
 
 func (h *StaticHTTPChecker) Check(ctx context.Context) error {
-	var attempts uint
 
-	for {
+	retriable := func() error {
 		result := h.Common.performSingleCheck(ctx, h.Upstream)
-		attempts++
 
 		if result.Success {
 			h.Common.Logger.Info().Msgf("check successful in %s with status: %s",
@@ -27,26 +24,10 @@ func (h *StaticHTTPChecker) Check(ctx context.Context) error {
 			return nil
 		}
 
-		numTries := fmt.Sprintf("%d", attempts)
-		if h.Common.Retries > 0 {
-			numTries = fmt.Sprintf("%d/%d", attempts, h.Common.Retries)
-
-			if attempts >= h.Common.Retries {
-				h.Common.Logger.Error().Msgf("max retries reached: %d", h.Common.Retries)
-				return fmt.Errorf("max retries (%d) exceeded", h.Common.Retries)
-			}
-		}
-
-		jitterSeconds := rand.Intn(6) + 5 // 5-10 seconds
-		if result.Error != nil {
-			h.Common.Logger.Info().Err(result.Error).Msgf("[%s] check failed, retrying in %ds...", numTries, jitterSeconds)
-		}
-
-		if err := waitWithJitter(ctx, jitterSeconds); err != nil {
-			h.Common.Logger.Info().Msg("shutdown signal received")
-			return err
-		}
+		return result.Error
 	}
+
+	return h.Common.runWithJitterBackoff(ctx, retriable)
 }
 
 func (c *HTTPCommon) performSingleCheck(ctx context.Context, upstream string) checkResult {

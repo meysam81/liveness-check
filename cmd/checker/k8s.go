@@ -2,8 +2,8 @@ package checker
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -76,46 +76,47 @@ func (k *K8sPodChecker) Check(ctx context.Context) error {
 		return err
 	}
 
-	k.Common.Logger.Info().Strs("labels", k.LabelSelector).Str("namespace", k.Namespace).Msg("listing pods")
-
-	pods, err := clientset.CoreV1().Pods(k.Namespace).List(ctx, metav1.ListOptions{
-		LabelSelector: strings.Join(k.LabelSelector, ","),
-	})
-	if err != nil {
-		return err
-	}
-
-	k.Common.Logger.Info().Msgf("found %d pods with the selected filters", len(pods.Items))
-
 	var latestPod *corev1.Pod
-	for _, pod := range pods.Items {
-		if k.Image != "" && k.Image != pod.Spec.Containers[0].Image {
-			k.Common.Logger.Info().Msgf("found pod %s/%s but did not match on image", pod.Namespace, pod.Name)
-			continue
-		}
-
-		if latestPod == nil || latestPod.CreationTimestamp.After(pod.CreationTimestamp.Time) {
-			latestPod = &pod
-		}
-	}
-
-	if latestPod == nil {
-		return fmt.Errorf("no matching pod found in %s namespace with labels: %s", k.Namespace, k.LabelSelector)
-	}
-
 	var podIP string
-	for {
-		podIP = latestPod.Status.PodIP
-		if podIP != "" {
-			k.Common.Logger.Info().Msgf("pod %s has an IP assigned: %s", latestPod.Name, latestPod.Status.PodIP)
-			break
-		}
 
-		jitterSeconds := rand.Intn(6) + 5
-		err := waitWithJitter(ctx, jitterSeconds)
+	retriable := func() error {
+		k.Common.Logger.Info().Strs("labels", k.LabelSelector).Str("namespace", k.Namespace).Msg("listing pods")
+
+		pods, err := clientset.CoreV1().Pods(k.Namespace).List(ctx, metav1.ListOptions{
+			LabelSelector: strings.Join(k.LabelSelector, ","),
+		})
 		if err != nil {
 			return err
 		}
+
+		k.Common.Logger.Info().Msgf("found %d pods with the selected filters", len(pods.Items))
+
+		for _, pod := range pods.Items {
+			if k.Image != "" && k.Image != pod.Spec.Containers[0].Image {
+				k.Common.Logger.Info().Msgf("found pod %s/%s but did not match on image", pod.Namespace, pod.Name)
+				continue
+			}
+
+			if latestPod == nil || latestPod.CreationTimestamp.After(pod.CreationTimestamp.Time) {
+				latestPod = &pod
+			}
+		}
+
+		if latestPod == nil {
+			return fmt.Errorf("no matching pod found in %s namespace with labels: %s", k.Namespace, k.LabelSelector)
+		}
+		podIP = latestPod.Status.PodIP
+		if podIP != "" {
+			k.Common.Logger.Info().Msgf("pod %s has an IP assigned: %s", latestPod.Name, latestPod.Status.PodIP)
+			return nil
+		}
+
+		return errors.New("no IP assigned to the pod yet")
+	}
+
+	err = k.Common.runWithJitterBackoff(ctx, retriable)
+	if err != nil {
+		return err
 	}
 
 	port := k.Port

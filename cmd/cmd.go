@@ -95,6 +95,20 @@ func (a *app) createGlobalFlags() []cli.Flag {
 			Destination: &a.Config.StatusCode,
 			Sources:     cli.EnvVars("STATUS_CODE"),
 		},
+		&cli.IntFlag{
+			Name:        "jitter-min-seconds",
+			Usage:       "The min seconds when picking a random time for backoff",
+			Value:       5,
+			Destination: &a.Config.JitterMin,
+			Sources:     cli.EnvVars("JITTER_MIN"),
+		},
+		&cli.IntFlag{
+			Name:        "jitter-max-seconds",
+			Usage:       "The max seconds when picking a random time for backoff",
+			Value:       10,
+			Destination: &a.Config.JitterMax,
+			Sources:     cli.EnvVars("JITTER_MAX"),
+		},
 	}
 }
 
@@ -186,6 +200,8 @@ func (a *app) createK8sCheckCommand() *cli.Command {
 					Retries:    a.Config.Retries,
 					StatusCode: a.Config.StatusCode,
 					Logger:     a.Logger,
+					JitterMin:  a.Config.JitterMin,
+					JitterMax:  a.Config.JitterMax,
 				},
 			}
 
@@ -225,6 +241,8 @@ func (a *app) staticHTTPCheck(ctx context.Context, c *cli.Command) error {
 			Retries:    a.Config.Retries,
 			StatusCode: a.Config.StatusCode,
 			Logger:     a.Logger,
+			JitterMin:  a.Config.JitterMin,
+			JitterMax:  a.Config.JitterMax,
 		},
 	}
 

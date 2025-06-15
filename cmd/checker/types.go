@@ -11,6 +11,8 @@ type HTTPCommon struct {
 	HTTPClient *http.Client
 	Retries    uint
 	StatusCode int
+	JitterMin  int
+	JitterMax  int
 	Logger     *logging.Logger
 }
 
