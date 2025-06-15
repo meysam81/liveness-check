@@ -17,25 +17,22 @@ func (c *HTTPCommon) runWithJitterBackoff(ctx context.Context, do func() error) 
 		jitterSeconds := rand.Intn(high) + low
 
 		err := do()
+		if err == nil {
+			return nil
+		}
+
 		attempts++
 
 		tries := fmt.Sprintf("%d", attempts)
 		if c.Retries > 0 {
 			tries = fmt.Sprintf("%d/%d", attempts, c.Retries)
-		}
-
-		if err != nil {
-			c.Logger.Info().Err(err).Msgf("[%s] failed, retrying in %ds...", tries, jitterSeconds)
-		} else {
-			return nil
-		}
-
-		if c.Retries > 0 {
 			if attempts >= c.Retries {
 				c.Logger.Error().Msgf("max retries reached: %d", c.Retries)
 				return fmt.Errorf("max retries (%d) exceeded", c.Retries)
 			}
 		}
+
+		c.Logger.Info().Err(err).Msgf("[%s] failed, retrying in %ds...", tries, jitterSeconds)
 
 		if err := waitWithJitter(ctx, jitterSeconds); err != nil {
 			c.Logger.Info().Msg("shutdown signal received")
