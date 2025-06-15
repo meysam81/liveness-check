@@ -31,6 +31,12 @@ func NewApp() *app {
 	}
 }
 
+const (
+	CMD_STATIC_CHECK = "static-check"
+	CMD_K8S_POD      = "k8s-pod"
+	COPYRIGHT        = "(c) Meysam Azad"
+)
+
 func createLogger(cfg *config.Config) *logging.Logger {
 	logger := logging.NewLogger(logging.WithLogLevel(cfg.GetLogLevel()))
 	return &logger
@@ -56,8 +62,10 @@ func (a *app) CreateCommand(version, commit, date, builtBy string) *cli.Command 
 			a.createCheckCommand(),
 			a.createK8sCheckCommand(),
 		},
-		Flags:  a.createGlobalFlags(),
-		Action: a.rootAction,
+		Flags:          a.createGlobalFlags(),
+		Action:         a.rootAction,
+		DefaultCommand: CMD_K8S_POD,
+		Copyright:      COPYRIGHT,
 	}
 }
 
@@ -92,7 +100,7 @@ func (a *app) createGlobalFlags() []cli.Flag {
 
 func (a *app) createCheckCommand() *cli.Command {
 	return &cli.Command{
-		Name:  "static-check",
+		Name:  CMD_STATIC_CHECK,
 		Usage: "Perform HTTP check on a static uptream target",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -110,7 +118,7 @@ func (a *app) createCheckCommand() *cli.Command {
 
 func (a *app) createK8sCheckCommand() *cli.Command {
 	return &cli.Command{
-		Name:  "k8s-pod",
+		Name:  CMD_K8S_POD,
 		Usage: "Find the most recent pod deployed with a set of label selectors and perform HTTP health check on the given endpoint.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{

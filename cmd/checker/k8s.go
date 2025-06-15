@@ -82,7 +82,7 @@ func (k *K8sPodChecker) Check(ctx context.Context) error {
 		LabelSelector: strings.Join(k.LabelSelector, ","),
 	})
 	if err != nil {
-		return nil
+		return err
 	}
 
 	k.Common.Logger.Info().Msgf("found %d pods with the selected filters", len(pods.Items))
@@ -144,10 +144,5 @@ func (k *K8sPodChecker) Check(ctx context.Context) error {
 		Common:   k.Common,
 	}
 
-	err = staticCheck.Check(ctx)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return staticCheck.Check(ctx)
 }
