@@ -26,6 +26,6 @@ func main() {
 	app.Logger.Debug().Msg("Starting the app...")
 
 	if err := command.Run(ctx, os.Args); err != nil {
-		app.Logger.Fatal().Err(err).Msg("good bye till next time.")
+		app.Logger.Fatal().Err(err).Send()
 	}
 }
