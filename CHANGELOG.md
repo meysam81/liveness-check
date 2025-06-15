@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/meysam81/liveness-check/compare/v1.2.0...v1.2.1) (2025-06-15)
+
+
+### Bug Fixes
+
+* **docs:** add more badges ([6e98d97](https://github.com/meysam81/liveness-check/commit/6e98d97593273468832104b4a107c151cd761b5d))
+* **docs:** remove extra backticks ([dd60b54](https://github.com/meysam81/liveness-check/commit/dd60b54699df2bd2a92152884091cbea283d1cbd))
+
 ## [1.2.0](https://github.com/meysam81/liveness-check/compare/v1.1.2...v1.2.0) (2025-06-15)
 
 
