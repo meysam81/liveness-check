@@ -65,10 +65,6 @@ A **production-ready Kubernetes tool** that automatically finds your recently de
 
 Head over to the [`deploy/`](./deploy/) directory and apply the provided Kubernetes Job manifest:
 
-````bash
-
-### 2. Customize for your app
-
 ```yaml
 # Example: Check if your deployment is ready
 env:
@@ -78,7 +74,7 @@ env:
     value: "app=my-app,version=v2.1.0"
   - name: ENDPOINT
     value: "/api/health"
-````
+```
 
 ### 3. Run and verify
 
