@@ -56,6 +56,8 @@ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWE
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/meysam81/x v1.8.2 h1:HXKgHKoeVZWppsknJ+A0Aa4rWZNUzyyUD8Zg8YqAYSA=
 github.com/meysam81/x v1.8.2/go.mod h1:d2iHskePtzk+pVXm4Cwq5zR2MzfcnE4afPNcEYYqZiw=
+github.com/meysam81/x v1.9.2 h1:/5I2GI6DW8IyDvWKty0oe55MigRTC/o8lsay3tvzsGw=
+github.com/meysam81/x v1.9.2/go.mod h1:X85rtviQpG83Qe9PU6oeRYP+RBHtfqhEw0axmRs+mTE=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
