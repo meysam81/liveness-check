@@ -3,7 +3,7 @@ module github.com/meysam81/liveness-check
 go 1.24.2
 
 require (
-	github.com/meysam81/x v1.8.2
+	github.com/meysam81/x v1.9.4
 	github.com/urfave/cli/v3 v3.3.8
 	k8s.io/api v0.33.1
 	k8s.io/apimachinery v0.33.1
